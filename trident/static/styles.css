@@ -1,0 +1,49 @@
+body {
+  color: white;
+  background: black;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 30px;
+}
+
+#input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+button,
+label,
+#progress,
+#results {
+  width: 300px;
+  box-sizing: border-box;
+  border: solid 1px white;
+  background: black;
+  color: white;
+  font-size: 24px;
+  margin: auto;
+  padding: 10px;
+}
+
+#progress {
+  border: none;
+}
+
+img {
+  width: 500px;
+  margin-bottom: 25px;
+}
+
+#results {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 25px;
+}
