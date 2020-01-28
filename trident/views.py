@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from .forms import UploadFileForm
 from django.views.decorators.csrf import csrf_exempt
+from .scripts.classifier import run
 
 
 def index(request):
@@ -9,8 +10,9 @@ def index(request):
 
 
 @csrf_exempt
-def classify(request):
+def runClassificaiton(request):
     print('>>>>>>>>>>>>>')
+    run()
     data = {
         'name': 'YES',
     }

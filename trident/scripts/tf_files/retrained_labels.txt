@@ -1,0 +1,12 @@
+black
+blue
+brown
+canary
+china
+copper
+grass
+quillback
+tiger
+vermillion
+yelloweye
+yellowtail
