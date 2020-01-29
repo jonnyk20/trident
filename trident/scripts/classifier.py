@@ -178,10 +178,6 @@ DETECTOR_PATH = str(cwd/'rcnn.pb')
 object_detector = Object_Detector(DETECTOR_PATH)
 
 def run(img):
-    # print('RUNNING')
-    # img = cv2.imread(IMAGE_PATH)
-    # print(img)
-    # print(type(img))
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     result = object_detector.detect_image(img, score_thr=0.8)
     return result
