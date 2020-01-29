@@ -91,9 +91,11 @@ def classify(file):
 
     print('\nEvaluation time (1-image): {:.3f}s\n'.format(end-start))
     template = "{} (score={:0.5f})"
+    output = []
     for i in top_k:
         print(template.format(labels[i], results[i]))
-
+        output.append({ 'class': labels[i], 'score': np.float64(results[i])})
+    return output
 
 class Object_Detector():
     def __init__(self, model_path):
@@ -131,8 +133,9 @@ class Object_Detector():
         # warmup
         self.detect_image(np.ones((600, 600, 3)))
 
-    def detect_image(self, image_np, score_thr=0.5, print_time=False):
+    def detect_image(self, image_np, score_thr=0.5, print_time=True):
         image_w, image_h = image_np.shape[1], image_np.shape[0]
+        detections = []
 
         # Actual detection.
         t = time.time()
@@ -140,6 +143,7 @@ class Object_Detector():
             [self.detection_boxes, self.detection_scores,
                 self.detection_classes, self.num_detections],
             feed_dict={self.image_tensor: np.expand_dims(image_np, axis=0)})
+        high_scores  = scores[scores > score_thr]
         if print_time:
             print('detection time :', time.time()-t)
         # Visualization of the results of a detection.
@@ -151,13 +155,20 @@ class Object_Detector():
             cropped = image_np[top_left[1]:bottom_right[1],
                                top_left[0]:bottom_right[0]]
 #             cv2.imwrite(CROPPED_PATH, cropped)
-            classify(cropped)
+            classifications = classify(cropped)
+            detection = {
+                'raw_coords': np.float64(box).tolist(),
+                'score': np.float64(high_scores[i]),
+                'coords': [top_left, bottom_right],
+                'classifications': classifications
+            }
+            detections.append(detection)
 
             cv2.rectangle(image_np, top_left, bottom_right, (0, 255, 0), 3)
             cv2.putText(image_np, self.label_dict[int(
                 classes[0, i])], top_left, cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
-        return image_np
+        return detections
 
 
 # MODEL_PATH = 'fish_ssd_fpn_graph/frozen_inference_graph.pb'
@@ -166,8 +177,13 @@ DETECTOR_PATH = str(cwd/'rcnn.pb')
 
 object_detector = Object_Detector(DETECTOR_PATH)
 
-def run():
-    print('RUNNING')
-    img = cv2.imread(IMAGE_PATH)
+def run(img):
+    # print('RUNNING')
+    # img = cv2.imread(IMAGE_PATH)
+    # print(img)
+    # print(type(img))
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img_ = object_detector.detect_image(img, score_thr=0.8)
+    result = object_detector.detect_image(img, score_thr=0.8)
+    return result
+
+# run()
