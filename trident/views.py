@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 import json
 from functools import singledispatch
+from .scripts.image_tools import get_image
 
 @singledispatch
 def to_serializable(val):
@@ -48,3 +49,12 @@ def runClassificaiton(request):
             print('FAIL')
             return JsonResponse(fail)
             pass
+
+def sample(request):
+    print('SAMPLE')
+    image = get_image()
+    res = run(image)
+    return JsonResponse(res, safe=False)
+
+def ping(request):
+    return JsonResponse({ "pong": True })

@@ -21,5 +21,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
+    path('ping', views.ping, name='ping'),
+    path('sample', views.sample, name='sample'),
     path('classify/', views.runClassificaiton, name='runClassificaiton'),
 ]
