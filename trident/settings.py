@@ -26,7 +26,7 @@ SECRET_KEY = '=^!j@)-m9#_71!3fx)+l0#1x&8$!5&tg+-fp1(*gi&k!g&koko'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['shrouded-escarpment-68847.herokuapp.com', '127.0.0.1:8000']
 
 
 # Application definition
@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'trident.urls'
@@ -58,7 +59,7 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(PROJECT_DIR, 'templates')],
+        'DIRS': [os.path.join(PROJECT_DIR, 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,10 +127,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-print('PROJECT_ROOT', PROJECT_ROOT)
-STATIC_URL = '/static/'
+
+print('ROOT', PROJECT_ROOT)
+# STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static/'),
+    os.path.join(PROJECT_ROOT, '../', 'build', 'static'),
 )
 
 django_heroku.settings(locals())

@@ -21,8 +21,8 @@ def ts_float32(val):
     return np.float64(val)
 
 
-def index(request):
-    return render(request, 'index.html', {})
+# def index(request):
+#     return render(request, 'index.html', {})
 
 
 @csrf_exempt
